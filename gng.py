@@ -6,6 +6,8 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from sklearn import decomposition
 import copy
+import os
+
 
 __authors__ = 'Adrien Guille'
 __email__ = 'adrien.guille@univ-lyon2.fr'
@@ -19,10 +21,13 @@ Information Processing Systems 7, 1995.
 
 class GrowingNeuralGas:
 
-    def __init__(self, input_data):
+    def __init__(self, input_data,output_folder):
         self.network = None
+        self.output_folder = output_folder
         self.data = input_data
         self.units_created = 0
+        if not os.path.exists(output_folder):
+            os.makedirs(output_folder)
         plt.style.use('ggplot')
 
     def find_nearest_units(self, observation):
@@ -101,7 +106,8 @@ class GrowingNeuralGas:
                 steps += 1
                 if steps % l == 0:
                     if plot_evolution:
-                        self.plot_network('visualization/sequence/' + str(sequence) + '.png')
+                        print(str(self.output_folder)+'/' + str(sequence) + '.png')
+                        self.plot_network(str(self.output_folder)+'/' + str(sequence) + '.png')
                     sequence += 1
                     # 8.a determine the unit q with the maximum accumulated error
                     q = 0
